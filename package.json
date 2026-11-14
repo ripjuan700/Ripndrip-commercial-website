@@ -1,0 +1,13 @@
+{
+  "name": "ripndrip-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "resend": "^6.0.0",
+    "formidable": "^3.5.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
