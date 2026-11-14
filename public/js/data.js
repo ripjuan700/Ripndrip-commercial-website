@@ -66,69 +66,91 @@ const HERO_SLIDES = [
    destacado   → true = aparece en "Lo nuevo" del inicio              */
 const PRODUCTOS = [
   {
-    id: "ghost-denim",
-    nombre: "Ghost Denim Oversize",
-    categoria: "Jeans",
-    precio: 189000,
-    tallas: ["28", "30", "32", "34"],
-    descripcion: "Jean de corte amplio de la colección RIPNDRIP.",
-    imagen:  "img/productos/ghost-denim-1.jpg",   // ⬅ REEMPLAZAR (900×1200)
-    imagen2: "img/productos/ghost-denim-2.jpg",   // ⬅ REEMPLAZAR o dejar ""
-    destacado: true
-  },
-  {
-    id: "toxic-cargo",
-    nombre: "Toxic Green Cargo",
-    categoria: "Jeans",
-    precio: 199000,
-    tallas: ["28", "30", "32", "34"],
-    descripcion: "Pantalón cargo con detalles en verde.",
-    imagen:  "img/productos/toxic-cargo-1.jpg",   // ⬅ REEMPLAZAR (900×1200)
-    imagen2: "",                                  // ⬅ REEMPLAZAR o dejar ""
-    destacado: true
-  },
-  {
-    id: "blackout-tee",
-    nombre: "Blackout Tee",
+    id: "ride-the-lightning-tee",
+    nombre: "Ride the Lightning Tee",
     categoria: "Camisetas",
-    precio: 79000,
+    precio: 95000,
     tallas: ["S", "M", "L", "XL"],
-    descripcion: "Camiseta negra con gráfica RIPNDRIP.",
-    imagen:  "img/productos/blackout-tee-1.jpg",  // ⬅ REEMPLAZAR (900×1200)
-    imagen2: "img/productos/blackout-tee-2.jpg",  // ⬅ REEMPLAZAR o dejar ""
-    destacado: true
-  },
-  {
-    id: "static-tee",
-    nombre: "Static Tee",
-    categoria: "Camisetas",
-    precio: 85000,
-    tallas: ["S", "M", "L", "XL"],
-    descripcion: "Camiseta de corte relajado con estampado frontal.",
-    imagen:  "img/productos/static-tee-1.jpg",    // ⬅ REEMPLAZAR (900×1200)
-    imagen2: "",                                  // ⬅ REEMPLAZAR o dejar ""
-    destacado: true
-  },
-  {
-    id: "rip-hoodie",
-    nombre: "Rip Hoodie",
-    categoria: "Buzos",
-    precio: 159000,
-    tallas: ["S", "M", "L", "XL"],
-    descripcion: "Buzo con capota y logo de la marca.",
-    imagen:  "img/productos/rip-hoodie-1.jpg",    // ⬅ REEMPLAZAR (900×1200)
-    imagen2: "",                                  // ⬅ REEMPLAZAR o dejar ""
+    descripcion: "Camiseta negra de lavado ácido con gráfica de rayos y calaveras, estética metal de los 80. Corte relajado.",
+    imagen:  "img/productos/ride-the-lightning-tee-1.jpg",
+    imagen2: "",
     destacado: false
   },
   {
-    id: "barcode-cap",
-    nombre: "Barcode Cap",
+    id: "smoke-break-tee",
+    nombre: "Smoke Break Tee",
+    categoria: "Camisetas",
+    precio: 95000,
+    tallas: ["S", "M", "L", "XL"],
+    descripcion: "Camiseta negra de lavado ácido con gráfica vintage de botas, humo y tipografía roja. Corte relajado y caída oversize.",
+    imagen:  "img/productos/smoke-break-tee-1.jpg",
+    imagen2: "",
+    destacado: false
+  },
+  {
+    id: "hell-trio-tee",
+    nombre: "Hell Trio Tee",
+    categoria: "Camisetas",
+    precio: 92000,
+    tallas: ["S", "M", "L", "XL"],
+    descripcion: "Camiseta negra de lavado ácido con gráfica de calaveras cornudas en amarillo y rojo. Estampado de gran formato al pecho.",
+    imagen:  "img/productos/hell-trio-tee-1.jpg",
+    imagen2: "",
+    destacado: false
+  },
+  {
+    id: "ghost-denim",
+    nombre: "Ghost Cargo Denim",
+    categoria: "Jeans",
+    precio: 209000,
+    tallas: ["28", "30", "32", "34"],
+    descripcion: "Jean cargo de mezclilla azul desgastada con bolsillos laterales de gran formato, pierna ancha y caída recta. Tiro alto, costuras contrastadas y acabado lavado a la piedra.",
+    imagen:  "img/productos/ghost-denim-1.jpg",
+    imagen2: "",
+    destacado: true
+  },
+  {
+    id: "haze-cargo",
+    nombre: "Haze Cargo",
+    categoria: "Jeans",
+    precio: 199000,
+    tallas: ["28", "30", "32", "34"],
+    descripcion: "Cargo negro de gabardina resistente con estampado de hojas en verde neón. Bolsillos utilitarios con tachuelas, cierre lateral y cadena metálica desmontable. Pierna ancha y bajo ajustable.",
+    imagen:  "img/productos/haze-cargo-1.jpg",
+    imagen2: "",
+    destacado: true
+  },
+  {
+    id: "midnight-hoodie",
+    nombre: "Midnight Zip Hoodie",
+    categoria: "Buzos",
+    precio: 229000,
+    tallas: ["S", "M", "L", "XL"],
+    descripcion: "Buzo con capota y cierre completo en felpa desgastada negra. Gráfica «Midnight» en plata con calavera, huesos y detalles en violeta, estampada al frente y en las mangas. Corte oversize con puños y cintura acanalados.",
+    imagen:  "img/productos/midnight-hoodie-1.jpg",
+    imagen2: "",
+    destacado: true
+  },
+  {
+    id: "winged-skull-hoodie",
+    nombre: "Winged Skull Zip Hoodie",
+    categoria: "Buzos",
+    precio: 239000,
+    tallas: ["S", "M", "L", "XL"],
+    descripcion: "Buzo negro de lavado ácido con capota doble y cierre metálico. Calavera alada con tipografía gótica y acentos rojos, ilustración de gran formato al frente y en las mangas. Felpa pesada y caída amplia.",
+    imagen:  "img/productos/winged-skull-hoodie-1.jpg",
+    imagen2: "",
+    destacado: true
+  },
+  {
+    id: "burdeos-cap",
+    nombre: "Burdeos Metal Cap",
     categoria: "Accesorios",
     precio: 59000,
     tallas: ["Única"],
-    descripcion: "Gorra con el código de barras de RIPNDRIP.",
-    imagen:  "img/productos/barcode-cap-1.jpg",   // ⬅ REEMPLAZAR (900×1200)
-    imagen2: "",                                  // ⬅ REEMPLAZAR o dejar ""
+    descripcion: "Gorra de sarga burdeos lavada al ácido con logo bordado en blanco. Seis paneles, visera curva y cierre trasero ajustable.",
+    imagen:  "img/productos/burdeos-cap-1.jpg",
+    imagen2: "",
     destacado: false
   }
 ];
@@ -138,10 +160,10 @@ const PRODUCTOS = [
    productoId debe coincidir con el "id" de una prenda de arriba.
    La imagen que se muestra es la "imagen" de esa prenda.               */
 const DROP = {
-  productoId: "ghost-denim",
+  productoId: "midnight-hoodie",
   etiqueta:   "DROP DESTACADO",
-  titulo:     "GHOST DENIM",
-  texto:      "La pieza que no puede faltar en tu rotación."
+  titulo:     "MIDNIGHT",
+  texto:      "Calavera, plata y violeta sobre negro lavado. El zip hoodie más pesado del drop."
 };
 
 
