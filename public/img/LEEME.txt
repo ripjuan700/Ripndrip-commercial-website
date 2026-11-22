@@ -1,0 +1,21 @@
+IMÁGENES DE RIPNDRIP
+====================
+img/productos/  -> fotos de las prendas (900x1200 px, vertical)
+img/hero/       -> banners del carrusel del inicio (1600x900 px, horizontal)
+
+Después de guardar una foto aquí, abre js/data.js y cambia la ruta
+marcada con "REEMPLAZAR" por el nombre de tu archivo.
+Ejemplo:  imagen: "img/productos/mi-jean.jpg"
+
+
+LOGO
+====
+img/logo.png         -> logo oficial (blanco sobre fondo transparente).
+                        Se usa en el header y en el footer de todas las páginas.
+img/logo-fuente.png  -> archivo original entregado, sin recortar ni transparentar.
+                        Solo es respaldo: no se muestra en el sitio.
+
+Si reemplazas img/logo.png por otra versión, procura que sea:
+  - PNG con transparencia
+  - letras blancas (el sitio tiene fondo oscuro)
+  - recortado al contenido, sin mucho margen alrededor

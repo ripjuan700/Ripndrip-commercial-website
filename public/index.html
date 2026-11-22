@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RIPNDRIP — Streetwear independiente</title>
+<meta name="description" content="RIPNDRIP: marca de streetwear independiente. Jeans, camisetas, buzos y accesorios.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-pagina="inicio">
+<a class="saltar" href="#principal">Saltar al contenido</a>
+
+<!-- El header, el footer y el carrito lateral se generan desde js/app.js
+    (función montarLayout) y aparecen igual en todas las páginas. -->
+<header id="site-header" class="site-header"></header>
+
+<main id="principal">
+
+  <!-- 1. HERO / CARRUSEL: los slides se editan en js/data.js (HERO_SLIDES) -->
+  <section class="hero" aria-label="Destacados">
+    <h1 class="solo-lectores">RIPNDRIP — Streetwear independiente</h1>
+    <div class="slides" id="hero-slides"></div>
+    <button class="flecha izq" id="hero-prev" aria-label="Slide anterior">&larr;</button>
+    <button class="flecha der" id="hero-next" aria-label="Slide siguiente">&rarr;</button>
+    <div class="puntos" id="hero-puntos"></div>
+  </section>
+
+  <!-- 2. FRANJA EN MOVIMIENTO (✏️ edita los textos; el bloque está repetido a propósito para que el bucle no tenga cortes) -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-pista">
+      <span>RIPNDRIP</span><span>STREETWEAR INDEPENDIENTE</span><span>ROCK · METAL · GRUNGE · Y2K</span><span>NUEVO DROP</span>
+      <span>RIPNDRIP</span><span>STREETWEAR INDEPENDIENTE</span><span>ROCK · METAL · GRUNGE · Y2K</span><span>NUEVO DROP</span>
+    </div>
+  </div>
+
+  <!-- 3. LO NUEVO: prendas con destacado:true en js/data.js -->
+  <section class="seccion">
+    <div class="contenedor">
+      <div class="seccion-cab">
+        <h2 class="display">Lo nuevo</h2>
+        <a class="enlace-flecha" href="tienda.html">Ver toda la tienda →</a>
+      </div>
+      <div class="grid-prod" id="grid-destacados"></div>
+    </div>
+  </section>
+
+  <!-- 4. DROP DESTACADO: se edita en js/data.js (DROP) -->
+  <section class="seccion" style="padding-top:0">
+    <div class="contenedor">
+      <div class="drop reveal" id="drop-destacado"></div>
+    </div>
+  </section>
+
+  <!-- 5. CATEGORÍAS: salen de CATEGORIAS en js/data.js -->
+  <section class="seccion" style="padding-top:0">
+    <div class="contenedor">
+      <div class="seccion-cab"><h2 class="display">Compra por categoría</h2></div>
+      <div class="cats reveal" id="cats"></div>
+    </div>
+  </section>
+
+  <!-- 6. ¿POR QUÉ RIPNDRIP? (✏️ edita estos textos con tu propuesta de valor real) -->
+  <section class="seccion" style="padding-top:0">
+    <div class="contenedor">
+      <div class="seccion-cab"><h2 class="display">¿Por qué RIPNDRIP?</h2></div>
+      <div class="porque reveal">
+        <article>
+          <span class="num mono">01</span>
+          <h3 class="display">Streetwear independiente</h3>
+          <p>Una marca que nace de la calle y no de la vitrina.</p>
+        </article>
+        <article>
+          <span class="num mono">02</span>
+          <h3 class="display">Estética underground</h3>
+          <p>Influencias del rock, el metal, el grunge y el Y2K.</p>
+        </article>
+        <article>
+          <span class="num mono">03</span>
+          <h3 class="display">Gráfica con carácter</h3>
+          <p>Diseños pensados para destacar, no para pasar desapercibidos.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. LLAMADA A LA ACCIÓN -->
+  <section class="cta">
+    <div class="contenedor reveal">
+      <h2 class="display">¿Hablamos?</h2>
+      <p>Escríbenos y resolvemos tus dudas o tu pedido.</p>
+      <a class="btn" href="contacto.html">Contáctanos</a>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<noscript><p style="padding:24px;text-align:center">Este sitio necesita JavaScript para mostrar el catálogo y el carrito.</p></noscript>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

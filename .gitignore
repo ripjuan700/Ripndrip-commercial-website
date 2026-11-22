@@ -1,0 +1,13 @@
+# Secretos del correo (Vercel usa sus propias variables)
+.env
+.env.local
+
+# Vercel
+.vercel
+
+# Dependencias (Vercel las instala al desplegar)
+node_modules/
+
+# Sistema
+.DS_Store
+Thumbs.db

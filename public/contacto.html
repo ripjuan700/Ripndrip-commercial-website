@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contacto — RIPNDRIP</title>
+<meta name="description" content="Escríbenos: formulario de contacto de RIPNDRIP.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-pagina="contacto">
+<a class="saltar" href="#principal">Saltar al contenido</a>
+
+<!-- El header, el footer y el carrito lateral se generan desde js/app.js
+     (función montarLayout) y aparecen igual en todas las páginas. -->
+<header id="site-header" class="site-header"></header>
+
+<main id="principal">
+
+  <section class="pagina-cab">
+    <div class="contenedor">
+      <span class="etiqueta mono">ESCRÍBENOS</span>
+      <h1 class="display">Contacto</h1>
+    </div>
+  </section>
+
+  <section class="seccion" style="padding-top:56px">
+    <div class="contenedor contacto-grid">
+      <div class="contacto-info">
+        <h2 class="display">Hablemos</h2>
+        <p>Cuéntanos tu duda, tu idea o tu pedido. El mensaje llega directamente al correo de la marca.</p>
+        <p>También estamos en Instagram: <a class="ig" id="ig-link" href="https://www.instagram.com/ripndrip.oficial" target="_blank" rel="noopener">@ripndrip.oficial</a></p>
+      </div>
+
+      <!-- El envío lo hace api/enviar.js en Vercel, con Resend.
+           Los nombres (name="...") viajan tal cual al correo:
+           nombre, correo, asunto, mensaje y archivos (adjuntos). -->
+      <form class="form" id="form-contacto" enctype="multipart/form-data" novalidate>
+        <div class="campo">
+          <label class="mono" for="nombre">NOMBRE</label>
+          <input type="text" id="nombre" name="nombre" required autocomplete="name" maxlength="80" placeholder="Tu nombre">
+        </div>
+        <div class="campo">
+          <label class="mono" for="correo">CORREO</label>
+          <input type="email" id="correo" name="correo" required autocomplete="email" maxlength="120" placeholder="tu@correo.com">
+        </div>
+        <div class="campo">
+          <label class="mono" for="asunto">ASUNTO</label>
+          <input type="text" id="asunto" name="asunto" maxlength="150" placeholder="¿Sobre qué quieres hablar?">
+        </div>
+        <div class="campo">
+          <label class="mono" for="mensaje">MENSAJE</label>
+          <textarea id="mensaje" name="mensaje" required maxlength="4000" placeholder="Escribe tu mensaje"></textarea>
+        </div>
+        <div class="campo">
+          <label class="mono" for="archivos">ADJUNTOS (OPCIONAL)</label>
+          <input class="input-archivos" type="file" id="archivos" name="archivos" accept=".pdf,.jpg,.jpeg,.png,.webp" multiple>
+          <p class="ayuda-archivos mono">PDF, JPG, PNG o WEBP · máximo 5 archivos · 3 MB en total</p>
+          <div id="lista-archivos" class="lista-archivos"></div>
+        </div>
+        <button class="btn" type="submit" id="form-enviar">Enviar mensaje</button>
+        <p class="form-estado" id="form-estado" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<noscript><p style="padding:24px;text-align:center">Este sitio necesita JavaScript para mostrar el catálogo y el carrito.</p></noscript>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
