@@ -4,8 +4,9 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "resend": "^6.0.0",
-    "formidable": "^3.5.4"
+    "@vercel/analytics": "^2.0.1",
+    "formidable": "^3.5.4",
+    "resend": "^6.0.0"
   },
   "engines": {
     "node": ">=18"
