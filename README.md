@@ -9,7 +9,8 @@ que envía correos —y adjuntos— mediante **Resend**, usando una función de
 ```
 ripndrip-web/
 ├── api/
-│   └── enviar.js        ← servidor: recibe el formulario y llama a Resend
+│   ├── enviar.js        ← servidor: recibe el formulario y llama a Resend
+│   └── instagram-feed.js ← servidor: consulta las publicaciones de Instagram
 ├── public/              ← el sitio que ve el visitante
 │   ├── index.html
 │   ├── tienda.html
@@ -101,7 +102,33 @@ incluye las prendas, tallas y el total.
 
 | Archivo | Qué contiene |
 |---|---|
-| `public/js/data.js` | Productos, precios, categorías, banners y `CONTACTO.endpoint` |
+| `public/js/data.js` | Productos, precios, categorías, configuración del Hero y `CONTACTO.endpoint` |
 | `public/js/app.js` | Carrito, páginas y envío del formulario |
 | `public/css/styles.css` | Diseño (colores en `:root`) |
 | `public/img/logo.png` | Logo oficial |
+
+
+## 7. Feed de Instagram dentro de la tienda
+
+El botón flotante de Instagram abre una ventana dentro de RIPNDRIP. El contenido se solicita desde `api/instagram-feed.js`; el token nunca se envía al navegador.
+
+### Requisitos de Meta
+
+1. La cuenta `@ripndrip.oficial` debe ser profesional (Empresa o Creador). La API de Instagram con inicio de sesión de Instagram no necesita una página de Facebook vinculada.
+2. Crea una aplicación en [Meta for Developers](https://developers.facebook.com/) y agrega el producto **Instagram** con **Instagram Login**.
+3. Configura el inicio de sesión comercial de Instagram y solicita el permiso `instagram_business_basic`. Para un feed de solo lectura no se necesitan permisos de publicación, mensajes ni comentarios.
+4. Autoriza la cuenta RIPNDRIP y genera un token de usuario de Instagram de larga duración.
+5. En Vercel → Settings → Environment Variables agrega:
+
+| Variable | Valor |
+|---|---|
+| `INSTAGRAM_ACCESS_TOKEN` | Token de acceso largo de la cuenta RIPNDRIP |
+| `INSTAGRAM_API_VERSION` | `v26.0` (puede actualizarse cuando Meta publique otra versión) |
+
+6. Haz Redeploy después de guardar las variables.
+
+La ruta `/api/instagram-feed` consulta las últimas 12 publicaciones con `instagram_business_basic`, devuelve únicamente los campos necesarios para la galería y almacena la respuesta en caché durante cinco minutos. Si falta el token, la tienda muestra un estado informativo y conserva el enlace al perfil; no se inventan publicaciones de muestra.
+
+**Mantenimiento del token:** revisa su vigencia en el panel de Meta y renuévalo antes de que expire; actualiza `INSTAGRAM_ACCESS_TOKEN` en Vercel y vuelve a desplegar. No copies el token a `data.js`, `app.js`, HTML ni al repositorio.
+
+Documentación oficial: [Instagram API con Instagram Login](https://developers.facebook.com/docs/instagram-platform/instagram-api-with-instagram-login/) · [Cambios de Instagram API](https://developers.facebook.com/docs/instagram/platform/instagram-api/changelog/) · [Versiones de Graph API](https://developers.facebook.com/docs/graph-api/changelog/versions/).
