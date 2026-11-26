@@ -238,7 +238,37 @@ function montarLayout() {
       <a class="btn" href="carrito.html">Ver carrito</a>
     </div>
   </aside>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>`);
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="contacto-flotante" aria-label="Contacto y redes sociales">
+    <a class="contacto-fab fab-whatsapp" href="https://wa.me/qr/D44DWTZE5VN2B1" target="_blank" rel="noopener noreferrer" aria-label="Escríbenos por WhatsApp">
+      <span class="fab-tooltip">¿Tienes dudas? Escríbenos</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11.8 11.8 0 0 0 2 17.7L.5 23.5l6-1.6A11.8 11.8 0 0 0 20.5 3.5ZM12 21a9.7 9.7 0 0 1-4.9-1.3l-.4-.2-3.6 1 1-3.5-.2-.4A9.7 9.7 0 1 1 12 21Zm5.3-7.3c-.3-.2-1.8-.9-2.1-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8 8 0 0 1-2.4-1.5 9 9 0 0 1-1.7-2.1c-.2-.3 0-.5.1-.6l.5-.6c.2-.2.2-.4.3-.6.1-.2 0-.5 0-.6s-.7-1.7-1-2.3c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.2-1.2 2.8s1.2 3.2 1.4 3.4c.2.2 2.4 3.7 5.8 5.1.8.3 1.4.5 1.9.6.8.2 1.5.2 2.1.1.6-.1 1.8-.7 2-1.4.3-.7.3-1.3.2-1.4-.1-.2-.3-.3-.6-.5Z"/></svg>
+    </a>
+    <button class="contacto-fab fab-instagram" type="button" data-instagram-abrir aria-label="Ver Instagram de RIPNDRIP">
+      <span class="fab-tooltip">Síguenos en Instagram</span>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle class="ig-punto" cx="17.5" cy="6.5" r="1"/></svg>
+    </button>
+  </div>
+
+  <section class="instagram-modal" id="instagram-modal" aria-hidden="true" aria-labelledby="instagram-titulo">
+    <button class="instagram-fondo" type="button" data-instagram-cerrar aria-label="Cerrar Instagram"></button>
+    <div class="instagram-panel" role="dialog" aria-modal="true" aria-labelledby="instagram-titulo">
+      <div class="instagram-cab">
+        <div class="instagram-identidad">
+          <span class="instagram-avatar">R</span>
+          <div><p class="mono instagram-overline">RIPNDRIP / SOCIAL FEED</p><h2 id="instagram-titulo">@ripndrip.oficial</h2></div>
+        </div>
+        <div class="instagram-acciones">
+          <a class="btn btn-borde instagram-seguir" href="${esc(MARCA.instagramUrl)}" target="_blank" rel="noopener noreferrer">Seguir perfil ↗</a>
+          <button class="instagram-cerrar" type="button" data-instagram-cerrar aria-label="Cerrar ventana de Instagram">✕</button>
+        </div>
+      </div>
+      <div class="instagram-feed-meta"><span class="mono">PUBLICACIONES RECIENTES</span><span class="mono" id="instagram-feed-cuenta">INSTAGRAM API</span></div>
+      <div class="instagram-feed" id="instagram-feed" aria-live="polite"><div class="instagram-estado"><span class="instagram-loader"></span><p>Preparando el feed...</p></div></div>
+      <div class="instagram-pie"><span class="mono">STREETWEAR INDEPENDIENTE</span><a href="${esc(MARCA.instagramUrl)}" target="_blank" rel="noopener noreferrer">Ver perfil completo en Instagram ↗</a></div>
+    </div>
+  </section>`);
 
   /* menú móvil */
   const btn = $("#btn-menu"), menu = $("#menu");
@@ -254,7 +284,74 @@ function montarLayout() {
   $("#abrir-carrito").addEventListener("click", abrirDrawer);
   $("#drawer-cerrar").addEventListener("click", cerrarDrawer);
   $("#drawer-fondo").addEventListener("click", cerrarDrawer);
-  document.addEventListener("keydown", e => { if (e.key === "Escape") { cerrarDrawer(); cerrarMenu(); } });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") { cerrarDrawer(); cerrarMenu(); cerrarInstagram(); }
+  });
+
+  /* Instagram: modal visual + feed servido desde la API protegida del servidor. */
+  const modalInstagram = $("#instagram-modal");
+  let instagramCargado = false;
+  let instagramEnCurso = false;
+  const abrirInstagram = () => {
+    modalInstagram.classList.add("abierto");
+    modalInstagram.setAttribute("aria-hidden", "false");
+    document.body.classList.add("sin-scroll");
+    $(".instagram-cerrar", modalInstagram).focus();
+    if (!instagramCargado && !instagramEnCurso) cargarFeedInstagram();
+  };
+  const cerrarInstagram = () => {
+    if (!modalInstagram) return;
+    modalInstagram.classList.remove("abierto");
+    modalInstagram.setAttribute("aria-hidden", "true");
+    if (!$("#drawer")?.classList.contains("abierto")) document.body.classList.remove("sin-scroll");
+  };
+  $("[data-instagram-abrir]").addEventListener("click", abrirInstagram);
+  $$('[data-instagram-cerrar]').forEach(b => b.addEventListener("click", cerrarInstagram));
+
+  async function cargarFeedInstagram() {
+    const feed = $("#instagram-feed");
+    const cuenta = $("#instagram-feed-cuenta");
+    instagramEnCurso = true;
+    feed.innerHTML = `<div class="instagram-estado"><span class="instagram-loader"></span><p>Conectando con Instagram...</p></div>`;
+    try {
+      const respuesta = await fetch(MARCA.instagramFeedEndpoint, { headers: { Accept: "application/json" } });
+      const datos = await respuesta.json().catch(() => ({}));
+      if (!respuesta.ok || !datos.success) {
+        if (datos.configured === false) {
+          feed.innerHTML = `<div class="instagram-estado instagram-vacio"><span class="mono">API NOT CONNECTED / 01</span><h3>El feed todavía no está conectado.</h3><p>La ventana ya está lista. Falta configurar el acceso seguro de Instagram en las variables de entorno de Vercel.</p><a class="btn btn-borde" href="${esc(MARCA.instagramUrl)}" target="_blank" rel="noopener noreferrer">Visitar Instagram ↗</a></div>`;
+        } else {
+          feed.innerHTML = `<div class="instagram-estado instagram-vacio"><span class="mono">CONNECTION ERROR / 02</span><h3>No pudimos cargar las publicaciones.</h3><p>Comprueba la conexión de Instagram e inténtalo de nuevo.</p><button class="btn btn-borde" type="button" data-instagram-reintentar>Reintentar</button></div>`;
+          const retry = $("[data-instagram-reintentar]", feed);
+          if (retry) retry.addEventListener("click", () => { instagramCargado = false; cargarFeedInstagram(); });
+        }
+        return;
+      }
+
+      const publicaciones = Array.isArray(datos.data) ? datos.data : [];
+      cuenta.textContent = `${publicaciones.length} PUBLICACIONES`;
+      if (!publicaciones.length) {
+        feed.innerHTML = `<div class="instagram-estado instagram-vacio"><span class="mono">NO POSTS / 00</span><h3>No hay publicaciones disponibles.</h3><p>Las publicaciones recientes aparecerán aquí cuando la cuenta tenga contenido accesible mediante la API.</p></div>`;
+        instagramCargado = true;
+        return;
+      }
+
+      feed.innerHTML = publicaciones.map(post => {
+        const imagen = post.media_type === "VIDEO" ? (post.thumbnail_url || post.media_url) : post.media_url;
+        if (!imagen || !post.permalink) return "";
+        const etiqueta = post.media_type === "VIDEO" ? "REEL / VIDEO" : post.media_type === "CAROUSEL_ALBUM" ? "CAROUSEL" : "POST";
+        const caption = (post.caption || "RIPNDRIP").replace(/\s+/g, " ").trim();
+        return `<a class="instagram-post" href="${esc(post.permalink)}" target="_blank" rel="noopener noreferrer" aria-label="Abrir publicación de Instagram: ${esc(caption.slice(0, 90))}"><img src="${esc(imagen)}" alt="Publicación de RIPNDRIP" loading="lazy"><span class="instagram-post-tipo mono">${etiqueta} ↗</span></a>`;
+      }).join("");
+      instagramCargado = true;
+    } catch (error) {
+      console.error("No se pudo cargar el feed de Instagram:", error);
+      feed.innerHTML = `<div class="instagram-estado instagram-vacio"><span class="mono">NETWORK ERROR / 03</span><h3>Sin conexión con Instagram.</h3><p>Revisa tu conexión e inténtalo nuevamente.</p><button class="btn btn-borde" type="button" data-instagram-reintentar>Reintentar</button></div>`;
+      const retry = $("[data-instagram-reintentar]", feed);
+      if (retry) retry.addEventListener("click", () => { instagramCargado = false; cargarFeedInstagram(); });
+    } finally {
+      instagramEnCurso = false;
+    }
+  }
 }
 
 /* Animación de entrada al hacer scroll */
@@ -273,38 +370,101 @@ function observarReveal() {
 /* ====================================================================
    3. PÁGINA: INICIO (carrusel, lo nuevo, drop, categorías)
    ==================================================================== */
+function seleccionarProductosHero() {
+  const productos = PRODUCTOS.filter(p => p && p.id && p.imagen);
+  if (!productos.length) return [];
+  const mezclar = lista => {
+    const copia = [...lista];
+    for (let i = copia.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copia[i], copia[j]] = [copia[j], copia[i]];
+    }
+    return copia;
+  };
+
+  // Conserva presencia de todas las categorías y da prioridad inicial a destacados.
+  const elegidos = [];
+  PRODUCTOS.filter(p => p.destacado).forEach(p => { if (elegidos.length < 4) elegidos.push(p); });
+  CATEGORIAS.forEach(categoria => {
+    if (!elegidos.some(p => p.categoria === categoria)) {
+      const candidato = mezclar(productos.filter(p => p.categoria === categoria && !elegidos.some(e => e.id === p.id)))[0];
+      if (candidato) elegidos.push(candidato);
+    }
+  });
+  const restantes = mezclar(productos.filter(p => !elegidos.some(e => e.id === p.id)));
+  return mezclar([...elegidos, ...restantes].slice(0, Math.max(1, HERO_AUTO_CONFIG.maxSlides || 8)));
+}
+
 function iniciarInicio() {
-  /* --- carrusel --- */
+  /* --- carrusel procedural: crea campañas con productos reales del catálogo --- */
   const cont = $("#hero-slides"), puntosCont = $("#hero-puntos"), hero = $(".hero");
-  cont.innerHTML = HERO_SLIDES.map((s, i) => `
-    <article class="slide${i === 0 ? " activa" : ""}" aria-label="Slide ${i + 1} de ${HERO_SLIDES.length}">
-      ${imagenHTML(s.imagen, s.titulo)}
-      <span class="slide-overlay"></span>
-      <div class="contenedor slide-contenido">
-        <div class="slide-texto">
-          <span class="etiqueta mono">${esc(s.etiqueta)}</span>
-          <p class="slide-titulo display">${esc(s.titulo)}</p>
-          <p class="slide-desc">${esc(s.texto)}</p>
-          <a class="btn" href="${esc(s.enlace)}">${esc(s.boton)}</a>
+  const productosHero = seleccionarProductosHero();
+  const slidesHero = productosHero.map((producto, i) => {
+    const tema = ["underground", "editorial", "focus", "drop"][i % 4];
+    const copys = {
+      Jeans: "DENIM CON ACTITUD. HECHO PARA SALIRSE DE LA LÍNEA.",
+      Camisetas: "GRÁFICA QUE HABLA POR TI. SIN SEGUIR EL RUIDO.",
+      Buzos: "CAPAS PESADAS. ENERGÍA DE OTRA FRECUENCIA.",
+      Accesorios: "EL DETALLE FINAL. LA ACTITUD COMPLETA."
+    };
+    const etiqueta = producto.promocion?.etiqueta || (producto.destacado ? "FEATURED PIECE / NEW DROP" : `${producto.categoria.toUpperCase()} / SELECTED`);
+    const titulo = producto.promocion?.titulo || producto.nombre;
+    const subtitulo = producto.promocion?.subtitulo || copys[producto.categoria] || "STREETWEAR INDEPENDIENTE. SIN REGLAS.";
+    return `
+      <article class="slide promo-slide tema-${tema}${i === 0 ? " activa" : ""}" aria-label="Promoción ${i + 1} de HERO_SLIDE_COUNT_TOKEN" style="--promo-index:${String(i + 1).padStart(2, "0")}">
+        <span class="promo-word" aria-hidden="true">${esc(producto.categoria.toUpperCase())}</span>
+        <div class="promo-topline mono"><span>RIPNDRIP® / PRODUCT CAMPAIGN</span><span>VOL. ${String(i + 1).padStart(2, "0")}</span></div>
+        <div class="contenedor promo-layout">
+          <div class="promo-copy">
+            <span class="etiqueta mono">${esc(etiqueta)}</span>
+            <span class="promo-kicker mono">${esc(producto.categoria)} — ${producto.destacado ? "DESTACADO" : "COLECCIÓN"}</span>
+            <h2 class="promo-title display">${esc(titulo)}</h2>
+            <p class="promo-desc">${esc(subtitulo)}</p>
+            <div class="promo-purchase"><strong class="mono">${precio(producto.precio)}</strong><a class="btn" href="producto.html?id=${esc(producto.id)}">Ver producto <span aria-hidden="true">↗</span></a></div>
+          </div>
+          <a class="promo-visual" href="producto.html?id=${esc(producto.id)}" aria-label="Ver ${esc(producto.nombre)}">
+            <span class="promo-visual-ring" aria-hidden="true"></span>
+            <img ${i === 0 ? `src="${esc(producto.imagen)}" fetchpriority="high"` : `data-src="${esc(producto.imagen)}"`} alt="${esc(producto.nombre)}" onerror="this.style.display='none';this.parentElement.classList.add('promo-sin-foto')">
+            <span class="promo-image-tag mono">R/D — ${String(i + 1).padStart(2, "0")}</span>
+          </a>
         </div>
-      </div>
-    </article>`).join("");
-  puntosCont.innerHTML = HERO_SLIDES.map((_, i) =>
-    `<button class="punto${i === 0 ? " activo" : ""}" data-i="${i}" aria-label="Ir al slide ${i + 1}"></button>`).join("");
+        <div class="promo-bottomline mono"><span>ROCK · METAL · GRUNGE · Y2K</span><span>SCROLL / DISCOVER</span></div>
+      </article>`;
+  });
+  // Reemplaza el marcador de cantidad una vez se conoce el número definitivo.
+  const cantidadSlides = slidesHero.length;
+  cont.innerHTML = slidesHero.map(html => html.replaceAll('HERO_SLIDE_COUNT_TOKEN', cantidadSlides)).join("");
+  puntosCont.innerHTML = slidesHero.map((_, i) =>
+    `<button class="punto${i === 0 ? " activo" : ""}" data-i="${i}" aria-label="Ir a la promoción ${i + 1} de ${cantidadSlides}"></button>`).join("");
 
   const slides = $$(".slide", cont), puntos = $$(".punto", puntosCont);
   let actual = 0, reloj = null;
   const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  // Carga solo la imagen visible y la siguiente para no descargar todo el catálogo de golpe.
+  function activarImagen(indice) {
+    const imagen = $("img[data-src]", slides[indice]);
+    if (imagen) { imagen.src = imagen.dataset.src; imagen.removeAttribute("data-src"); }
+  }
+  activarImagen(0);
+
   function irA(n) {
     slides[actual].classList.remove("activa");
     puntos[actual].classList.remove("activo");
     actual = (n + slides.length) % slides.length;
+    activarImagen(actual);
+    activarImagen((actual + 1) % slides.length);
     slides[actual].classList.add("activa");
     puntos[actual].classList.add("activo");
   }
   const parar  = () => clearInterval(reloj);
-  const iniciar = () => { parar(); if (!sinMovimiento && slides.length > 1) reloj = setInterval(() => irA(actual + 1), 6000); };
+  const iniciar = () => {
+    parar();
+    if (!sinMovimiento && slides.length > 1) {
+      activarImagen((actual + 1) % slides.length);
+      reloj = setInterval(() => irA(actual + 1), HERO_AUTO_CONFIG.intervaloMs || 6000);
+    }
+  };
 
   $("#hero-prev").addEventListener("click", () => { irA(actual - 1); iniciar(); });
   $("#hero-next").addEventListener("click", () => { irA(actual + 1); iniciar(); });

@@ -4,12 +4,11 @@
 
    🖼️  CÓMO PONER TUS IMÁGENES (paso a paso)
 
-   1. Guarda tus fotos en estas carpetas:
-        img/productos/   → fotos de las prendas
-        img/hero/        → banners del carrusel de la página de inicio
-   2. Más abajo, en cada prenda y en cada slide, busca las líneas marcadas
-      con  ⬅ REEMPLAZAR  y cambia la ruta por el nombre real de tu archivo.
-        Ejemplo:   imagen: "img/productos/mi-jean.jpg"
+   1. Guarda tus fotos en img/productos/ y coloca la ruta correspondiente
+      en el campo imagen de cada producto.
+   2. El Hero genera automáticamente sus piezas con las fotos y los datos
+      del catálogo; ya no necesita imágenes de banners en img/hero/.
+      Ejemplo:   imagen: "img/productos/mi-jean.jpg"
    3. "imagen2" es una segunda foto (aparece al pasar el mouse y en la
       galería de la prenda). Si no la tienes, déjala como  ""
    4. Mientras una imagen no exista, el sitio muestra un recuadro con el
@@ -17,7 +16,7 @@
 
    Medidas recomendadas:
      • Prendas:            900 × 1200 px  (vertical, proporción 3:4)
-     • Banners del inicio: 1600 × 900 px  (horizontal, proporción 16:9)
+     • El Hero adapta las fotos del catálogo automáticamente.
 
    ⚠️  Los nombres, precios, tallas y textos de abajo son EJEMPLOS.
        Cámbialos por los reales de RIPNDRIP.
@@ -28,8 +27,9 @@
 const CATEGORIAS = ["Jeans", "Camisetas", "Buzos", "Accesorios"];
 
 
-/* ---------- 2. CARRUSEL DE LA PÁGINA DE INICIO ----------
-   Puedes agregar o quitar slides copiando/borrando un bloque { ... } */
+/* ---------- 2. CARRUSEL ANTERIOR (LEGADO) ----------
+   Se conserva como referencia. El inicio ahora utiliza HERO_AUTO_CONFIG
+   y genera las piezas a partir del catálogo PRODUCTOS. */
 const HERO_SLIDES = [
   {
     etiqueta: "NUEVO DROP",
@@ -58,12 +58,22 @@ const HERO_SLIDES = [
 ];
 
 
+/* ---------- 2B. HERO PROCEDURAL ----------
+   El Hero usa productos del catálogo y sus fotografías. No necesita banners
+   independientes en img/hero/. La selección cambia al cargar la página. */
+const HERO_AUTO_CONFIG = {
+  intervaloMs: 6000, // tiempo entre piezas (milisegundos)
+  maxSlides: 8      // cantidad de productos elegidos para cada visita
+};
+
 /* ---------- 3. PRODUCTOS ----------
    id          → único, sin espacios ni tildes (se usa en la URL)
    categoria   → debe ser una de CATEGORIAS
    precio      → número en pesos, sin puntos (189000 = $189.000)
    tallas      → lista de tallas; usa ["Única"] si no aplica
-   destacado   → true = aparece en "Lo nuevo" del inicio              */
+   destacado   → true = aparece en "Lo nuevo" del inicio
+   promocion   → opcional: { etiqueta, titulo, subtitulo } para personalizar
+                 el texto de la pieza procedural del Hero.                */
 const PRODUCTOS = [
   {
     id: "ride-the-lightning-tee",
@@ -265,5 +275,6 @@ const CONTACTO = {
 /* ---------- 6. DATOS DE LA MARCA ---------- */
 const MARCA = {
   instagramUrl:    "https://www.instagram.com/ripndrip.oficial",
-  instagramNombre: "@ripndrip.oficial"
+  instagramNombre: "@ripndrip.oficial",
+  instagramFeedEndpoint: "/api/instagram-feed"
 };
